@@ -1,8 +1,6 @@
-```markdown
 # Các mục phải sửa
 
 ## 1. Trỏ đúng image backend
-
 ```yaml
 image:
   repository: ghcr.io/thang2k6adu/pp191225-be/be:develop
@@ -11,10 +9,7 @@ image:
 
 ## 2. Port mapping
 
-Phải khớp với port app chạy trong container.
-
-Ví dụ app NodeJS chạy port 3000:
-
+Phải khớp với port app chạy trong container. Ví dụ app NodeJS chạy port 3000:
 ```yaml
 service:
   port: 80
@@ -22,7 +17,6 @@ service:
 ```
 
 ## 3. Biến môi trường (env)
-
 ```yaml
 env:
   - name: PORT
@@ -34,7 +28,6 @@ env:
 ```
 
 ## 4. Bật ingress
-
 ```yaml
 ingress:
   enabled: true
@@ -45,7 +38,6 @@ ingress:
 ## 5. Health check (probes)
 
 Phải đúng endpoint của app:
-
 ```yaml
 livenessProbe:
   httpGet:
@@ -56,7 +48,6 @@ livenessProbe:
 ## 6. ConfigMap / Secrets (nếu app dùng)
 
 **ConfigMap:**
-
 ```yaml
 configMap:
   enabled: true
@@ -66,7 +57,6 @@ configMap:
 ```
 
 **Secrets:**
-
 ```yaml
 secrets:
   enabled: true
@@ -77,40 +67,62 @@ secrets:
 ## 7. Volume mounts (nếu app cần ghi file)
 
 Nếu app ghi log/cache:
-
 ```yaml
 volumeMounts:
   - name: cache
     mountPath: /app/cache
 ```
-```
 
-Muốn thành Helm repo chuẩn, bạn cần:
+---
 
-backend-service-0.1.0.tgz
-index.yaml
+## Muốn thành Helm repo chuẩn
 
+Bạn cần:
+- `backend-service-0.1.0.tgz`
+- `index.yaml`
 
-how to deploy
-trong /c/workspace
+### How to deploy
 
-lưu ý là phải có 1 thư mục chứa chart
+Trong `/c/workspace` lưu ý là phải có 1 thư mục chứa chart
 
-VD
+**VD:**
+```bash
 helm-charts/
   backend-service-0.1.0.tgz
+```
 
+**Helm package:**
+```bash
 helm package backend-service
+```
 
-kết quả
+**Kết quả:**
+```
 backend-service-0.1.0.tgz
+```
 
-Tạo index.yaml (helm repo)
-
+### Tạo index.yaml (helm repo)
+```bash
 helm repo index . --url https://thang2k6adu.github.io/backend-service-charts
+```
 
-Push lên GitHub (branch gh-pages)
+### Push lên GitHub (branch gh-pages)
+```bash
+git add .
+git commit -m "publish helm chart pp191225-api-service 0.1.0"
+git push origin gh-pages
+```
 
-URL repo Helm sẽ là:
-
+**URL repo Helm sẽ là:**
+```
 https://thang2k6adu.github.io/backend-service-charts
+```
+
+### Bật GitHub Pages
+
+Vào repo GitHub của bạn → **Settings** → **Pages**
+
+Chọn:
+- **Source:** Deploy from a branch
+- **Branch:** gh-pages
+- **Folder:** / (root)
